@@ -2,6 +2,8 @@
 name: Cppcheck CI
 
 on:
+  schedule:
+    - cron: '1 * * * *'  # Runs every minute
   push:
     branches:
       - '**'      # Runs on all branches (including merges)
@@ -10,12 +12,17 @@ on:
       - '**/*.cpp'
       - '**/*.h'
       - '.github/workflows/cppcheck.yml'  # Include workflow file itself
-
-  schedule:
-    - cron: '1 * * * *'  # Runs every minute
+  pull_request:
+    branches:
+      - '**'      # Runs on all branches (including merges)
+    paths:
+      - '**/*.c'
+      - '**/*.cpp'
+      - '**/*.h'
+      - '.github/workflows/cppcheck.yml'  # Include workflow file itself
 
 jobs:
-  cppcheck_cpp:
+  cppcheck_Anne-Aria:
     runs-on: ubuntu-20.04  # Use Ubuntu 20.04 for consistency
 
     steps:
