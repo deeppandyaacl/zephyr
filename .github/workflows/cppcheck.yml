@@ -47,35 +47,29 @@ jobs:
           echo "Current working directory: $(pwd)"
           ls -al
 
-      - name: Run cppcheck and generate XML report
+      - name: Run cppcheck and generate reports
         run: |
-          REPORT_FILE="Anne-Aria_cppcheck-report-${{ env.IST_TIMESTAMP }}.xml"
+          REPORT_DIR="Anne-Aria_cppcheck-reports-${{ env.IST_TIMESTAMP }}"
+          mkdir -p $REPORT_DIR
+
+          XML_REPORT_FILE="$REPORT_DIR/Anne-Aria_cppcheck-report.xml"
           cppcheck $(pwd)/file \
           --xml \
-          --output-file=$REPORT_FILE \
+          --output-file=$XML_REPORT_FILE \
           --enable=warning,performance,portability,style \
           -I$(pwd)/file/zephyr/soc/arm/common \
           -I$(pwd)/file/zephyr/lib/libc/newlib/include \
           -I$(pwd)/file/zephyr/modules/hal
-          echo "REPORT_FILE=$REPORT_FILE" >> $GITHUB_ENV
 
-      - name: Generate HTML report from XML
-        run: |
-          HTML_REPORT_DIR="Anne-Aria_cppcheck-html-${{ env.IST_TIMESTAMP }}"
-          mkdir -p $HTML_REPORT_DIR
-          cppcheck-htmlreport --file=$REPORT_FILE \
+          # Generate HTML report inside the same directory
+          cppcheck-htmlreport --file=$XML_REPORT_FILE \
             --title="Cppcheck Analysis Report Anne-Aria" \
-            --report-dir=$HTML_REPORT_DIR
-          echo "HTML_REPORT_DIR=$HTML_REPORT_DIR" >> $GITHUB_ENV
+            --report-dir=$REPORT_DIR
 
-      - name: Upload cppcheck XML report as artifact
+          echo "REPORT_DIR=$REPORT_DIR" >> $GITHUB_ENV
+
+      - name: Upload cppcheck reports as artifact
         uses: actions/upload-artifact@v4.0.0
         with:
-          name: Anne-Aria_cppcheck-report-${{ env.IST_TIMESTAMP }}
-          path: ${{ env.REPORT_FILE }}
-
-      - name: Upload cppcheck HTML report as artifact
-        uses: actions/upload-artifact@v4.0.0
-        with:
-          name: Anne-Aria_cppcheck-html-${{ env.IST_TIMESTAMP }}
-          path: ${{ env.HTML_REPORT_DIR }}
+          name: Anne-Aria_cppcheck-reports-${{ env.IST_TIMESTAMP }}
+          path: ${{ env.REPORT_DIR }}
