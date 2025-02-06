@@ -1,0 +1,159 @@
+diff --git a/boot/bootutil/src/bootutil_public.c b/boot/bootutil/src/bootutil_public.c
+index afa601ca..3871a95d 100644
+--- a/boot/bootutil/src/bootutil_public.c
++++ b/boot/bootutil/src/bootutil_public.c
+@@ -393,6 +393,114 @@ boot_write_swap_info(const struct flash_area *fap, uint8_t swap_type,
+     return boot_write_trailer(fap, off, (const uint8_t *) &swap_info, 1);
+ }
+ 
++#ifdef CONFIG_MCUBOOT_SPI_NAND
++int
++boot_add_trailer_info(const struct flash_area *fap, uint32_t off,
++        const uint8_t *inbuf, uint8_t *outbuf, uint8_t inlen)
++{
++    uint8_t buf[BOOT_MAX_ALIGN];
++    uint8_t erased_val;
++    uint32_t align;
++    uint32_t page_off;
++
++    align = flash_area_align(fap);
++    align = ALIGN_UP(inlen, align);
++    if (align > BOOT_MAX_ALIGN) {
++        return -1;
++    }
++    erased_val = flash_area_erased_val(fap);
++
++    memcpy(buf, inbuf, inlen);
++    memset(&buf[inlen], erased_val, align - inlen);
++    page_off = (off % CONFIG_MCUBOOT_SPI_NAND_FLASH_LAYOUT_PAGE_SIZE);
++    memcpy(&outbuf[page_off], &buf[0], inlen);
++
++    return 0;
++}
++
++int
++boot_add_trailer_flag_info(const struct flash_area *fap, uint32_t off,
++        uint8_t *buf, uint8_t flag_val)
++{
++    const uint8_t flag_buf[1] = { flag_val };
++    return boot_add_trailer_info(fap, off, flag_buf, buf, 1);
++}
++
++int
++boot_add_magic_info(const struct flash_area *fap, uint8_t *buf)
++{
++    uint32_t off;
++    uint32_t pad_off;
++    uint32_t page_off;
++    uint8_t magic[BOOT_MAGIC_ALIGN_SIZE];
++    uint8_t erased_val;
++
++    off = boot_magic_off(fap);
++
++    /* image_trailer structure was modified with additional padding such that
++     * the pad+magic ends up in a flash minimum write region. The address
++     * returned by boot_magic_off() is the start of magic which is not the
++     * start of the flash write boundary and thus writes to the magic will fail.
++     * To account for this change, write to magic is first padded with 0xFF
++     * before writing to the trailer.
++     */
++    pad_off = ALIGN_DOWN(off, BOOT_MAX_ALIGN);
++
++    erased_val = flash_area_erased_val(fap);
++
++    memset(&magic[0], erased_val, sizeof(magic));
++    memcpy(&magic[BOOT_MAGIC_ALIGN_SIZE - BOOT_MAGIC_SZ], BOOT_IMG_MAGIC, BOOT_MAGIC_SZ);
++    page_off = (pad_off % CONFIG_MCUBOOT_SPI_NAND_FLASH_LAYOUT_PAGE_SIZE);
++    memcpy(&buf[page_off], &magic[0], BOOT_MAGIC_SZ);
++    BOOT_LOG_DBG("writing buffer magic; fa_id=%d off=0x%lx (0x%lx)",
++                 flash_area_get_id(fap), (unsigned long)off,
++                 (unsigned long)(flash_area_get_off(fap) + off));
++
++    return 0;
++}
++
++int
++boot_add_image_ok_info(const struct flash_area *fap, uint8_t *buf)
++{
++    uint32_t off;
++
++    off = boot_image_ok_off(fap);
++    BOOT_LOG_DBG("writing image_ok; fa_id=%d off=0x%lx (0x%lx)",
++                 flash_area_get_id(fap), (unsigned long)off,
++                 (unsigned long)(flash_area_get_off(fap) + off));
++    return boot_add_trailer_flag_info(fap, off, buf, BOOT_FLAG_SET);
++}
++
++int
++boot_add_swap_info(const struct flash_area *fap, uint8_t swap_type,
++                     uint8_t image_num, uint8_t *buf)
++{
++    uint32_t off;
++    uint8_t swap_info;
++
++    BOOT_SET_SWAP_INFO(swap_info, image_num, swap_type);
++    off = boot_swap_info_off(fap);
++    BOOT_LOG_DBG("writing swap_info; fa_id=%d off=0x%lx (0x%lx), swap_type=0x%x"
++                 " image_num=0x%x",
++                 flash_area_get_id(fap), (unsigned long)off,
++                 (unsigned long)(flash_area_get_off(fap) + off),
++                 swap_type, image_num);
++    return boot_add_trailer_info(fap, off, (const uint8_t *) &swap_info, buf, 1);
++}
++
++int
++boot_write_trailer_info(const struct flash_area *fap, uint8_t *buf)
++{
++    uint32_t off;
++    uint32_t addr;
++
++    off = boot_magic_off(fap);
++    addr = (off / CONFIG_MCUBOOT_SPI_NAND_FLASH_LAYOUT_PAGE_SIZE) * CONFIG_MCUBOOT_SPI_NAND_FLASH_LAYOUT_PAGE_SIZE;
++
++    return flash_area_write(fap, addr, buf, CONFIG_MCUBOOT_SPI_NAND_FLASH_LAYOUT_PAGE_SIZE);
++}
++#endif
++
+ int
+ boot_swap_type_multi(int image_index)
+ {
+@@ -522,6 +630,31 @@ boot_set_next(const struct flash_area *fa, bool active, bool confirm)
+ 
+     case BOOT_MAGIC_UNSET:
+         if (!active) {
++#ifdef CONFIG_MCUBOOT_SPI_NAND
++            uint8_t buf[CONFIG_MCUBOOT_SPI_NAND_FLASH_LAYOUT_PAGE_SIZE];
++            memset(buf, 0xff, sizeof(buf));
++
++            rc = boot_add_magic_info(fa, buf);
++
++            if (rc == 0 && confirm) {
++                rc = boot_add_image_ok_info(fa, buf);
++            }
++
++            if (rc == 0) {
++                uint8_t swap_type;
++
++                if (confirm) {
++                    swap_type = BOOT_SWAP_TYPE_PERM;
++                } else {
++                    swap_type = BOOT_SWAP_TYPE_TEST;
++                }
++                rc = boot_add_swap_info(fa, swap_type, flash_area_to_image(fa), buf);
++                
++                if(rc == 0) {
++                    boot_write_trailer_info(fa, buf);
++                }
++            }
++#else
+             rc = boot_write_magic(fa);
+ 
+             if (rc == 0 && confirm) {
+@@ -538,6 +671,7 @@ boot_set_next(const struct flash_area *fa, bool active, bool confirm)
+                 }
+                 rc = boot_write_swap_info(fa, swap_type, flash_area_to_image(fa));
+             }
++#endif
+         }
+         break;
+ 

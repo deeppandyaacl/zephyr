@@ -1,0 +1,12 @@
+# Generated file used for preloading a child image
+set(CMAKE_BUILD_TYPE "" CACHE INTERNAL "NCS child image controlled")
+set(CMAKE_VERBOSE_MAKEFILE "FALSE" CACHE INTERNAL "NCS child image controlled")
+set(BOARD_DIR "/home/deep/klokwork/my-workspace/boards/arm/anne_aria" CACHE INTERNAL "NCS child image controlled")
+set(BOARD_REVISION "3.0.0" CACHE INTERNAL "NCS child image controlled")
+set(ZEPHYR_TOOLCHAIN_VARIANT "zephyr" CACHE INTERNAL "NCS child image controlled")
+set(PM_DOMAINS "CPUNET" CACHE INTERNAL "NCS child image controlled")
+set(CPUNET_PM_DOMAIN_DYNAMIC_PARTITION "hci_ipc" CACHE INTERNAL "NCS child image controlled")
+set(WEST_PYTHON "/home/deep/klokwork/west-venv/bin/python3.12" CACHE INTERNAL "NCS child image controlled")
+set(BOARD "anne_aria_cpunet" CACHE INTERNAL "NCS child image controlled")
+set(DOMAIN "CPUNET" CACHE INTERNAL "NCS child image controlled")
+set(OVERLAY_CONFIG ";/home/deep/klokwork/my-workspace/nrf/subsys/partition_manager/partition_manager_enabled.conf" CACHE INTERNAL "NCS child image controlled")

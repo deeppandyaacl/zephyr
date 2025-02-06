@@ -1,0 +1,40 @@
+# Added Test Branch
+name: Cppcheck CI
+on:
+  push:
+    branches:
+      - '**'    # Runs before pushing to the main branch
+    paths:
+      - '**/*.c'
+      - '**/*.cpp'
+      - '**/*.h'
+  pull_request:
+    branches:
+      - '**'  # Runs before merging into main cpp1 testing deep 
+    paths:
+      - '**/*.c'
+      - '**/*.cpp'
+      - '**/*.h'
+
+jobs:
+  cppcheck_cpp:
+    runs-on: ubuntu-20.04  # Use Ubuntu 20.04 For consistency
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3  # Checkout the repository code
+
+      - name: Set up environment and install cppcheck
+        run: |
+          sudo apt update
+          sudo apt install -y cppcheck  # Install cppcheck
+
+      - name: Run cppcheck and generate report
+        run: |
+          cppcheck --enable=all --xml --xml-version=2 . 2> cppcheck-report.xml  # Running cppcheck
+
+      - name: Upload cppcheck report as artifact
+        uses: actions/upload-artifact@v4.0.0  #Uploads the cppcheck report1
+        with:
+          name: cppcheck-report
+          path: cppcheck-report.xml

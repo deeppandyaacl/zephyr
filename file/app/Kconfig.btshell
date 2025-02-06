@@ -1,0 +1,95 @@
+# SIBEL INC ("SIBEL HEALTH") CONFIDENTIAL
+#
+# Copyright 2018-2024 [Sibel Inc.], All Rights Reserved.
+#
+# NOTICE: All information contained herein is, and remains the property of SIBEL
+# INC. The intellectual and technical concepts contained herein are proprietary
+# to SIBEL INC and may be covered by U.S. and Foreign Patents, patents in
+# process, and are protected by trade secret or copyright law. Dissemination of
+# this information or reproduction of this material is strictly forbidden unless
+# prior written permission is obtained from SIBEL INC. Access to the source code
+# contained herein is hereby forbidden to anyone except current SIBEL INC
+# employees, managers or contractors who have executed Confidentiality and
+# Non-disclosure agreements explicitly covering such access.
+# The copyright notice above does not evidence any actual or intended
+# publication or disclosure of this source code, which includes information that
+# is confidential and/or proprietary, and is a trade secret of SIBEL INC.
+#
+# ANY REPRODUCTION, MODIFICATION, DISTRIBUTION, PUBLIC PERFORMANCE, OR PUBLIC
+# DISPLAY OF OR THROUGH USE OF THIS SOURCE CODE WITHOUT THE EXPRESS WRITTEN
+# CONSENT OF COMPANY IS STRICTLY PROHIBITED, AND IN VIOLATION OF APPLICABLE
+# LAWS AND INTERNATIONAL TREATIES. THE RECEIPT OR POSSESSION OF THIS SOURCE
+# CODE AND/OR RELATED INFORMATION DOES NOT CONVEY OR IMPLY ANY RIGHTS TO
+# REPRODUCE, DISCLOSE OR DISTRIBUTE ITS CONTENTS, OR TO MANUFACTURE, USE, OR
+# SELL ANYTHING THAT IT MAY DESCRIBE, IN WHOLE OR IN PART.
+
+menuconfig SHELL_BT
+	bool
+	prompt "Shell Bluetooth transport"
+    default y
+	depends on BT
+	select SHELL
+	select BT_NUS
+	select RING_BUFFER
+	help
+	  Enable shell BT NUS transport.
+
+if SHELL_BT
+
+config SHELL_PROMPT_BT
+	string "Displayed prompt name"
+	default "sh:~$ "
+	help
+	  Displayed prompt name for shell over bluetooth. If prompt is set, the shell will
+	  send two newlines during initialization.
+
+config SHELL_BT_TX_RING_BUFFER_SIZE
+	int "Set TX ring buffer size"
+	default 32
+	help
+	  Should be increased if long MTU is used since it allows to transfer
+	  data in bigger chunks (up to size of the ring buffer).
+
+config SHELL_BT_RX_RING_BUFFER_SIZE
+	int "Set RX ring buffer size"
+	default 32
+	help
+	  RX ring buffer size impacts accepted latency of handling incoming
+	  bytes by shell. If shell input is coming from the keyboard then it is
+	  usually enough if ring buffer is few bytes (more than one due to
+	  escape sequences). However, if bulk data is transferred it may be
+
+choice
+	prompt "Initial log level limit"
+	default SHELL_BT_INIT_LOG_LEVEL_WRN
+
+config SHELL_BT_INIT_LOG_LEVEL_DEFAULT
+	bool "System limit (LOG_MAX_LEVEL)"
+
+config SHELL_BT_INIT_LOG_LEVEL_DBG
+	bool "Debug"
+
+config SHELL_BT_INIT_LOG_LEVEL_INF
+	bool "Info"
+
+config SHELL_BT_INIT_LOG_LEVEL_WRN
+	bool "Warning"
+
+config SHELL_BT_INIT_LOG_LEVEL_ERR
+	bool "Error"
+
+config SHELL_BT_INIT_LOG_LEVEL_NONE
+	bool "None"
+endchoice
+
+config SHELL_BT_INIT_LOG_LEVEL
+	int
+	default 0 if SHELL_BT_INIT_LOG_LEVEL_NONE
+	default 1 if SHELL_BT_INIT_LOG_LEVEL_ERR
+	default 2 if SHELL_BT_INIT_LOG_LEVEL_WRN
+	default 3 if SHELL_BT_INIT_LOG_LEVEL_INF
+	default 4 if SHELL_BT_INIT_LOG_LEVEL_DBG
+	default 5 if SHELL_BT_INIT_LOG_LEVEL_DEFAULT
+
+endif #SHELL_BT
+

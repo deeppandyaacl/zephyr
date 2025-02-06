@@ -1,0 +1,11 @@
+# Generated file used for preloading a child image
+set(CMAKE_BUILD_TYPE "" CACHE INTERNAL "NCS child image controlled")
+set(CMAKE_VERBOSE_MAKEFILE "FALSE" CACHE INTERNAL "NCS child image controlled")
+set(BOARD_DIR "/home/deep/klokwork/my-workspace/boards/arm/anne_aria" CACHE INTERNAL "NCS child image controlled")
+set(BOARD_REVISION "3.0.0" CACHE INTERNAL "NCS child image controlled")
+set(ZEPHYR_TOOLCHAIN_VARIANT "zephyr" CACHE INTERNAL "NCS child image controlled")
+set(WEST_PYTHON "/home/deep/klokwork/west-venv/bin/python3.12" CACHE INTERNAL "NCS child image controlled")
+set(BOARD "anne_aria_cpuapp" CACHE INTERNAL "NCS child image controlled")
+set(CONF_FILE "/home/deep/klokwork/my-workspace/Anne-Aria/app/mcuboot.conf" CACHE INTERNAL "NCS child image controlled")
+set(DTC_OVERLAY_FILE ";/home/deep/klokwork/my-workspace/nrf/modules/mcuboot/flash_sim.overlay" CACHE INTERNAL "NCS child image controlled")
+set(OVERLAY_CONFIG "/home/deep/klokwork/my-workspace/nrf/subsys/pcd/pcd.conf;/home/deep/klokwork/my-workspace/nrf/subsys/bootloader/bl_override/override_external_mcuboot.conf;/home/deep/klokwork/my-workspace/nrf/subsys/partition_manager/ext_flash_mcuboot_secondary.conf;/home/deep/klokwork/my-workspace/nrf/subsys/partition_manager/partition_manager_enabled.conf" CACHE INTERNAL "NCS child image controlled")

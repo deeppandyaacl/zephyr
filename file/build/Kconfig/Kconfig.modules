@@ -1,0 +1,87 @@
+menu "Anne-Aria (/home/deep/klokwork/my-workspace/Anne-Aria)"
+osource "/home/deep/klokwork/my-workspace/sh_sdk_2_0/Kconfig"
+config ZEPHYR_ANNE_ARIA_MODULE
+	bool
+	default y
+endmenu
+menu "memfault-firmware-sdk (/home/deep/klokwork/my-workspace/modules/lib/memfault-firmware-sdk)"
+osource "/home/deep/klokwork/my-workspace/modules/lib/memfault-firmware-sdk/ports/zephyr/Kconfig"
+config ZEPHYR_MEMFAULT_FIRMWARE_SDK_MODULE
+	bool
+	default y
+endmenu
+menu "nrf (/home/deep/klokwork/my-workspace/nrf)"
+osource "/home/deep/klokwork/my-workspace/nrf/Kconfig.nrf"
+config ZEPHYR_NRF_MODULE
+	bool
+	default y
+endmenu
+menu "cjson (/home/deep/klokwork/my-workspace/modules/lib/cjson)"
+osource "$(ZEPHYR_CJSON_KCONFIG)"
+config ZEPHYR_CJSON_MODULE
+	bool
+	default y
+endmenu
+config ZEPHYR_TINYCRYPT_MODULE
+   bool
+   default y
+menu "mcuboot (/home/deep/klokwork/my-workspace/bootloader/mcuboot)"
+osource "$(ZEPHYR_MCUBOOT_KCONFIG)"
+config ZEPHYR_MCUBOOT_MODULE
+	bool
+	default y
+endmenu
+menu "mbedtls (/home/deep/klokwork/my-workspace/modules/crypto/mbedtls)"
+osource "$(ZEPHYR_MBEDTLS_KCONFIG)"
+config ZEPHYR_MBEDTLS_MODULE
+	bool
+	default y
+endmenu
+config ZEPHYR_LIBMETAL_MODULE
+   bool
+   default y
+config ZEPHYR_OPEN_AMP_MODULE
+   bool
+   default y
+menu "cmsis (/home/deep/klokwork/my-workspace/modules/hal/cmsis)"
+osource "$(ZEPHYR_CMSIS_KCONFIG)"
+config ZEPHYR_CMSIS_MODULE
+	bool
+	default y
+endmenu
+menu "hal_nordic (/home/deep/klokwork/my-workspace/modules/hal/nordic)"
+osource "$(ZEPHYR_HAL_NORDIC_KCONFIG)"
+config ZEPHYR_HAL_NORDIC_MODULE
+	bool
+	default y
+endmenu
+menu "liblc3 (/home/deep/klokwork/my-workspace/modules/lib/liblc3)"
+osource "$(ZEPHYR_LIBLC3_KCONFIG)"
+config ZEPHYR_LIBLC3_MODULE
+	bool
+	default y
+endmenu
+menu "littlefs (/home/deep/klokwork/my-workspace/modules/fs/littlefs)"
+osource "$(ZEPHYR_LITTLEFS_KCONFIG)"
+config ZEPHYR_LITTLEFS_MODULE
+	bool
+	default y
+endmenu
+menu "segger (/home/deep/klokwork/my-workspace/modules/debug/segger)"
+osource "$(ZEPHYR_SEGGER_KCONFIG)"
+config ZEPHYR_SEGGER_MODULE
+	bool
+	default y
+endmenu
+menu "zcbor (/home/deep/klokwork/my-workspace/modules/lib/zcbor)"
+osource "$(ZEPHYR_ZCBOR_KCONFIG)"
+config ZEPHYR_ZCBOR_MODULE
+	bool
+	default y
+endmenu
+menu "nrfxlib (/home/deep/klokwork/my-workspace/nrfxlib)"
+osource "/home/deep/klokwork/my-workspace/nrfxlib/Kconfig.nrfxlib"
+config ZEPHYR_NRFXLIB_MODULE
+	bool
+	default y
+endmenu

@@ -1,0 +1,13 @@
+# Target labels
+ b0n_subimage
+# Source files and their labels
+/home/deep/klokwork/my-workspace/Anne-Aria/build/hci_ipc/modules/nrf/samples/CMakeFiles/b0n_subimage
+/home/deep/klokwork/my-workspace/Anne-Aria/build/hci_ipc/modules/nrf/samples/CMakeFiles/b0n_subimage.rule
+/home/deep/klokwork/my-workspace/Anne-Aria/build/hci_ipc/modules/nrf/samples/CMakeFiles/b0n_subimage-complete.rule
+/home/deep/klokwork/my-workspace/Anne-Aria/build/hci_ipc/modules/nrf/samples/b0n_subimage-prefix/src/b0n_subimage-stamp/b0n_subimage-build.rule
+/home/deep/klokwork/my-workspace/Anne-Aria/build/hci_ipc/modules/nrf/samples/b0n_subimage-prefix/src/b0n_subimage-stamp/b0n_subimage-configure.rule
+/home/deep/klokwork/my-workspace/Anne-Aria/build/hci_ipc/modules/nrf/samples/b0n_subimage-prefix/src/b0n_subimage-stamp/b0n_subimage-download.rule
+/home/deep/klokwork/my-workspace/Anne-Aria/build/hci_ipc/modules/nrf/samples/b0n_subimage-prefix/src/b0n_subimage-stamp/b0n_subimage-install.rule
+/home/deep/klokwork/my-workspace/Anne-Aria/build/hci_ipc/modules/nrf/samples/b0n_subimage-prefix/src/b0n_subimage-stamp/b0n_subimage-mkdir.rule
+/home/deep/klokwork/my-workspace/Anne-Aria/build/hci_ipc/modules/nrf/samples/b0n_subimage-prefix/src/b0n_subimage-stamp/b0n_subimage-patch.rule
+/home/deep/klokwork/my-workspace/Anne-Aria/build/hci_ipc/modules/nrf/samples/b0n_subimage-prefix/src/b0n_subimage-stamp/b0n_subimage-update.rule

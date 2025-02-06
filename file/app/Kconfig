@@ -1,0 +1,251 @@
+# SIBEL INC ("SIBEL HEALTH") CONFIDENTIAL
+#
+# Copyright 2018-2024 [Sibel Inc.], All Rights Reserved.
+#
+# NOTICE: All information contained herein is, and remains the property of SIBEL
+# INC. The intellectual and technical concepts contained herein are proprietary
+# to SIBEL INC and may be covered by U.S. and Foreign Patents, patents in
+# process, and are protected by trade secret or copyright law. Dissemination of
+# this information or reproduction of this material is strictly forbidden unless
+# prior written permission is obtained from SIBEL INC. Access to the source code
+# contained herein is hereby forbidden to anyone except current SIBEL INC
+# employees, managers or contractors who have executed Confidentiality and
+# Non-disclosure agreements explicitly covering such access.
+# The copyright notice above does not evidence any actual or intended
+# publication or disclosure of this source code, which includes information that
+# is confidential and/or proprietary, and is a trade secret of SIBEL INC.
+#
+# ANY REPRODUCTION, MODIFICATION, DISTRIBUTION, PUBLIC PERFORMANCE, OR PUBLIC
+# DISPLAY OF OR THROUGH USE OF THIS SOURCE CODE WITHOUT THE EXPRESS WRITTEN
+# CONSENT OF COMPANY IS STRICTLY PROHIBITED, AND IN VIOLATION OF APPLICABLE
+# LAWS AND INTERNATIONAL TREATIES. THE RECEIPT OR POSSESSION OF THIS SOURCE
+# CODE AND/OR RELATED INFORMATION DOES NOT CONVEY OR IMPLY ANY RIGHTS TO
+# REPRODUCE, DISCLOSE OR DISTRIBUTE ITS CONTENTS, OR TO MANUFACTURE, USE, OR
+# SELL ANYTHING THAT IT MAY DESCRIBE, IN WHOLE OR IN PART.
+
+menu "Zephyr"
+rsource "Kconfig.btshell"
+rsource "Kconfig.version"
+rsource "Kconfig.audio"
+rsource "Kconfig.segno"
+source "Kconfig.zephyr"
+
+
+config TEMP_STREAMING
+	bool "Temperature Streaming"
+	default n
+    depends on TEMP_BLE_SERVICE && (MAX30205 || TMP119SH || AS6221) && SENSOR_STREAMING_APPLICATION
+	help
+	  This option is enabled to enable the streaming of temperature
+
+config IMU_STREAMING
+	bool "IMU Streaming"
+	default n
+    depends on IMU_BLE_SERVICE && (SH_LSM6DSL || SH_BMI323 || BMA456) && PIPES && SENSOR_STREAMING_APPLICATION
+	help
+	  This option is enabled to enable the streaming of temperature
+
+config IMU_ACCL_ODR_STREAMING
+	int "IMU sampling rate for streaming"
+	default 400
+    depends on IMU_STREAMING
+	help
+	  Sampling rate for streaming IMU in Hz
+
+config ECG_STREAMING
+	bool "ECG Streaming"
+	default n
+    depends on MAX30001
+	help
+	  This option is enabled to enable the streaming of ECG
+
+config MIC_STREAMING
+	bool "Microphone Streaming"
+	default n
+    depends on MIC_BLE_SERVICE && MICROPHONE && PIPES && SENSOR_STREAMING_APPLICATION
+	help
+	  This option is enabled to enable the streaming of Microphone
+
+config BAROMETER_STREAMING
+	bool "Barometer Streaming"
+	default n
+    depends on BARO_BLE_SERVICE && SH_BMP5 && PIPES && SENSOR_STREAMING_APPLICATION
+	help
+	  This option is enabled to enable the streaming of Barometer
+
+config TEST_LITTLEFS
+	bool "Test LittleFS"
+	default n
+    depends on MICRON_SPI_NAND
+	help
+	  This option is enabled to test the LittleFS multiple write/read
+	  and multiple mount/unmount
+	  
+config TEST_LITTLEFS_MULTI_WRITE
+	bool "Test LittleFS for multiple write"
+	default n
+    depends on MICRON_SPI_NAND
+	help
+	  This option is enabled to test the LittleFS single file multiple
+	  chunk write and single read 
+	  
+config TEST_FLASH
+	bool "Test Flash"
+	default n
+    depends on MICRON_SPI_NAND
+	help
+	  This option is enabled to test the flash multiple page write/read
+	  in multiple blocks
+
+config MAX30205_TEST
+    bool "Test the temprature sensor module"
+    depends on MAX30205
+    help
+       Set to enable the max30205 sensor test.
+       
+config LSM6DSL_TEST
+    bool "Test the lsm6dsl sensor module"
+    depends on SH_LSM6DSL
+    help
+       Set to enable the IMU sensor test.
+
+config FACTORY_DATA_BLOCK
+    bool "Enable the factory data block"
+    default n
+    help
+        Set to enable the factory data block.
+
+config CBOR_API
+    bool "Enable the cbor APIs"
+    default n
+    depends on ZCBOR
+    help
+        Set to access the cbor APIs.
+
+config FACTORY_DATA_BLOCK_TEST
+    bool "Test the the factory data block"
+	default n
+    depends on FACTORY_DATA_BLOCK && CBOR_API
+    help
+       Set to display the factory data block.
+
+config TEST_RAW_MIC_DATA
+    bool "Test the microphone with Raw data"
+	default n
+    depends on MICROPHONE
+    help
+       Raw microphone data will come on serial terminal for 1 second.
+
+config TEST_ENCODE_DECODE_DATA
+    bool "Test the microphone with LC3 Compression and Decompression"
+	default n
+    depends on MICROPHONE
+    help
+       Mic Data after LC3 compression and decompression will come on serial terminal for 1 second.
+
+config STREAM_CONN_INTERVAL_MIN
+    int "Stream Connection Interval Min"
+	default 12
+    depends on BT
+    help
+       Stream connection interval minimum.
+
+config STREAM_CONN_INTERVAL_MAX
+    int "Stream Connection Interval Max"
+	default 12
+    depends on BT
+    help
+       Stream connection interval minimum.
+
+config STREAM_SLAVE_LATENCY
+    int "Slave latency for stream"
+	default 0
+    depends on BT
+    help
+       Slave latency for ble connection.
+
+config MIC_STREAM_CONN_INTERVAL_MIN
+    int "Stream with Mic enabled Connection Interval Min"
+	default 12
+    depends on BT
+    help
+       Stream connection with microphone enabled interval minimum.
+
+config MIC_STREAM_CONN_INTERVAL_MAX
+    int "Stream with Mic enabled Connection Interval Max"
+	default 12
+    depends on BT
+    help
+       Stream connection with microhponr enabled interval minimum.
+
+config MIC_STREAM_SLAVE_LATENCY
+    int "Slave latency for stream with Mic enabled"
+	default 0
+    depends on BT
+    help
+       Slave latency for ble connection with microphone enabled.
+
+config IDLE_CONN_INTERVAL_MIN
+    int "Idle stream Connection Interval Min"
+	default 50
+    depends on BT
+    help
+       Idle connection interval minimum.
+
+config IDLE_CONN_INTERVAL_MAX
+    int "Idle stream Connection Interval Max"
+	default 70
+    depends on BT
+    help
+       Idle connection interval minimum.
+
+config IDLE_SLAVE_LATENCY
+    int "Idle slave latency for Idle"
+	default 1
+    depends on BT
+    help
+       Slave latency for ble connection.
+
+config SUPERVISION_TIMEOUT
+    int "Supervision timeout"
+	default 400
+    depends on BT
+    help
+       Supervision timeout for ble connection.
+# Kconfig File
+
+config MEMFAULT_NVIC_INTERRUPTS_TO_COLLECT
+    int "Number of NVIC interrupts to collect"
+    default 64
+    range 1 256
+    help
+      Set the number of interrupts to collect. If not set in prj.config, this will remain unused.
+
+config MEMFAULT_METRICS_BATTERY_ENABLE
+    bool "Enable battery metrics"
+    default n
+    help
+      Enable or disable battery metrics collection. If not set, this will remain unused.
+
+config MEMFAULT_METRICS_BATTERY_SOC_PCT_SCALE_VALUE
+    int "State-of-charge percentage scale value"
+    default 1
+    range 1 100
+    help
+      Set the scale value for state-of-charge percentage resolution. If not set, this will remain unused.
+
+config MEMFAULT_METRICS_HEARTBEAT_INTERVAL_SECS
+    int "Heartbeat interval in seconds"
+    default 30
+    range 1 3600
+    help
+      Set the interval for heartbeat reporting in seconds. If not set, this will remain unused.
+
+endmenu
+
+module = APP
+module-str = APP
+source "subsys/logging/Kconfig.template.log_config"
+
+rsource "../../sh_sdk_2_0/Kconfig"
+

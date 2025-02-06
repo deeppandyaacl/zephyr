@@ -1,0 +1,85 @@
+# Copyright (c) 2021 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+manifest:
+  remotes:
+  - name: ncs
+    url-base: https://github.com/nrfconnect
+  - name: zephyrproject-rtos
+    url-base: https://github.com/zephyrproject-rtos
+  - name: memfault
+    url-base: https://github.com/memfault
+  - name: sibelhealth
+    url-base: https://github.com/sibelhealth
+  projects:
+  - name: memfault-firmware-sdk
+    remote: memfault
+    revision: 6652e81ea85675d236b5485874fa457335ba7918
+    path: modules/lib/memfault-firmware-sdk
+  - name: sh_sdk_2.0
+    remote: sibelhealth
+    path: sh_sdk_2_0
+    revision: 341d78dd3156b9fd28acfebc4a137ba3d7b6ce32 #develop
+  - name: sh_zephyr_boards
+    remote: sibelhealth
+    path: boards
+    revision: b405484ce005933a041d92d695b0d5b4b0fcc02e
+  - name: sdk-nrf
+    remote: ncs
+    path: nrf
+    revision: eef645c4a31201df353fdff5447262d7675fa1c1 #v2.6.1
+    clone-depth: 1
+  - name: sdk-nrfxlib
+    remote: ncs
+    path: nrfxlib
+    revision: 9adb63b61a67ab0df6cd516870cae7b604f01af1 #v2.6
+    clone-depth: 1
+  - name: sdk-cjson
+    remote: ncs
+    revision: c6af068b7f05207b28d68880740e4b9ec1e4b50a
+    path: modules/lib/cjson
+  - name: tinycrypt
+    remote: zephyrproject-rtos
+    revision: 3e9a49d2672ec01435ffbf0d788db6d95ef28de0
+    path: modules/crypto/tinycrypt
+    groups:
+    - crypto
+  - name: sdk-mcuboot
+    remote: ncs
+    revision: 3c2f2ff12bc20625cd65730b6036d061de4da5f7 #v2.0.99-ncs1-branch 
+    path: bootloader/mcuboot
+  - name: sdk-mbedtls
+    remote: ncs
+    revision: 9beb52e67835a17368616b27700270b3eb99e4ca #v3.5.2-ncs2
+    path: modules/crypto/mbedtls
+  - name: libmetal
+    remote: zephyrproject-rtos
+    revision: b91611a6f47dd29fb24c46e5621e797557f80ec6
+    path: modules/hal/libmetal
+    groups:
+    - hal
+  - name: open-amp
+    remote: zephyrproject-rtos
+    revision: 42b7c577714b8f22ce82a901e19c1814af4609a8
+    path: modules/lib/open-amp
+  - name: sdk-zephyr
+    remote: ncs
+    path: zephyr
+    revision: 3758bcbfa5cd749d977e2600b6687104b8948243 #3.5.99
+    import:
+      # By using name-allowlist we can clone only the modules that are
+      # strictly needed by the application.
+      name-allowlist:
+      - cmsis # required by the ARM port
+      - hal_nordic # required by the nordic board
+      - littlefs
+      - segger
+      - zcbor
+      - liblc3
+  - name: segno
+    remote: sibelhealth
+    path: signal
+    revision: 4d7acfd0d97441279be2e9f8e488bbfdde3c594b
+
+  self:
+    path: Anne-Aria

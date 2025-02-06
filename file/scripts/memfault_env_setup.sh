@@ -1,0 +1,4 @@
+export MEMFAULT_ORG_TOKEN="oat_4K2Udu2z2xIT0UFHiVhmMt7Kt5lKeFUB"
+export MEMFAULT_ORG="sibel-health"
+export MEMFAULT_PROJECT="aria"
+export MEMFAULT_PROJECT_KEY="UXoxCkiVpOEHAjdX3PaLxnYeA8mYkn3m"

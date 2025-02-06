@@ -1,0 +1,1 @@
+"nrf":"/home/deep/klokwork/my-workspace/nrf":"/home/deep/klokwork/my-workspace/nrf/sysbuild"

@@ -1,0 +1,85 @@
+app:
+  address: 0x20200
+  end_address: 0xf6000
+  region: flash_primary
+  size: 0xd5e00
+data_logger_storage_partition:
+  address: 0xfd000
+  end_address: 0x100000
+  region: flash_primary
+  size: 0x3000
+external_flash:
+  address: 0xdc000
+  device: MT29
+  end_address: 0x20000000
+  region: external_flash
+  size: 0x1ff24000
+mcuboot:
+  address: 0x0
+  end_address: 0x20000
+  region: flash_primary
+  size: 0x20000
+mcuboot_pad:
+  address: 0x20000
+  end_address: 0x20200
+  region: flash_primary
+  size: 0x200
+mcuboot_primary:
+  address: 0x20000
+  end_address: 0xfc000
+  orig_span: &id001
+  - mcuboot_pad
+  - app
+  region: flash_primary
+  size: 0xdc000
+  span: *id001
+mcuboot_primary_app:
+  address: 0x20200
+  end_address: 0xfc000
+  orig_span: &id002
+  - app
+  region: flash_primary
+  size: 0xdbe00
+  span: *id002
+mcuboot_secondary:
+  address: 0x0
+  device: MT29
+  end_address: 0xdc000
+  region: external_flash
+  size: 0xdc000
+memfault_partition:
+  address: 0xfc000
+  end_address: 0xfd000
+  region: flash_primary
+  size: 0x1000
+nvs_storage:
+  address: 0xf6000
+  end_address: 0xfc000
+  placement:
+    before:
+    - end
+  region: flash_primary
+  size: 0x6000
+otp:
+  address: 0xff8100
+  end_address: 0xff83fc
+  region: otp
+  size: 0x2fc
+pcd_sram:
+  address: 0x20000000
+  end_address: 0x20002000
+  region: sram_primary
+  size: 0x2000
+rpmsg_nrf53_sram:
+  address: 0x20070000
+  end_address: 0x20080000
+  placement:
+    before:
+    - end
+  region: sram_primary
+  size: 0x10000
+sram_primary:
+  address: 0x20002000
+  end_address: 0x20070000
+  region: sram_primary
+  size: 0x6e000
