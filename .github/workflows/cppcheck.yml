@@ -1,5 +1,5 @@
 # Added Test Branch
-# Testing purpose
+# Testing
 name: Cppcheck CI
 on:
   push:
