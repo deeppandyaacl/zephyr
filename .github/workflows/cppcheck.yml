@@ -1,27 +1,22 @@
-# Added Test Branch
-# Testing
-# Yaml chnage
+# Cppcheck CI
 name: Cppcheck CI
+
 on:
   push:
     branches:
-      - '**'    # Runs on all branches (including merges)
+      - '**'      # Runs on all branches (including merges)
     paths:
       - '**/*.c'
       - '**/*.cpp'
       - '**/*.h'
       - '.github/workflows/cppcheck.yml'  # Include workflow file itself
-  pull_request:
-    branches:
-      - '**'    # Runs on all branches (including merges)
-    paths:
-      - '**/*.c'
-      - '**/*.cpp'
-      - '**/*.h'
-      - '.github/workflows/cppcheck.yml'  # Include workflow file itself
+
+  schedule:
+    - cron: '07 6 * * *'  # Runs every day at 6:07 AM UTC (which is 11:37 AM IST)
+
 jobs:
   cppcheck_cpp:
-    runs-on: ubuntu-20.04  # Use Ubuntu 20.04 For consistency
+    runs-on: ubuntu-20.04  # Use Ubuntu 20.04 for consistency
 
     steps:
       - name: Checkout code
