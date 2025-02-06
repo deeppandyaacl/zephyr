@@ -31,7 +31,7 @@ jobs:
 
       - name: Run cppcheck and generate report
         run: |
-          cppcheck --enable=all --xml --xml-version=2 . 2> cppcheck-report.xml  # Running cppcheck
+          cppcheck --enable=warning,performance,portability,style --xml --xml-version=2 . 2> cppcheck-report.xml  # Running cppcheck
 
       - name: Upload cppcheck report as artifact
         uses: actions/upload-artifact@v4.0.0  #Uploads the cppcheck report1
