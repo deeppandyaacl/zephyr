@@ -1,27 +1,9 @@
 # Cppcheck CI
-name: Cppcheck CI
+name: Scheduled CppCheck
 
 on:
   schedule:
-    - cron: '*/5 * * * *'  # Runs every minute
-    # - cron: '5 * * * *'  # Runs every minute
-  push:
-    branches:
-      - '**'      # Runs on all branches (including merges)
-    paths:
-      - '**/*.c'
-      - '**/*.cpp'
-      - '**/*.h'
-      - '.github/workflows/cppcheck.yml'  # Include workflow file itself
-  pull_request:
-    branches:
-      - '**'      # Runs on all branches (including merges)
-    paths:
-      - '**/*.c'
-      - '**/*.cpp'
-      - '**/*.h'
-      - '.github/workflows/cppcheck.yml'  # Include workflow file itself
-
+    - cron: '*/5 * * * *'  # Runs every 5 minute
 jobs:
   cppcheck_Anne-Aria:
     runs-on: ubuntu-20.04  # Use Ubuntu 20.04 for consistency
