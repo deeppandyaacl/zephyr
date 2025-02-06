@@ -4,14 +4,7 @@ name: Cppcheck CI
 on:
   push:
     branches:
-      - '**'    # Runs before pushing to the main branch
-    paths:
-      - '**/*.c'
-      - '**/*.cpp'
-      - '**/*.h'
-  pull_request:
-    branches:
-      - '**'  # Runs before merging into main
+      - '**'    # Runs on all branches (including merges)
     paths:
       - '**/*.c'
       - '**/*.cpp'
@@ -30,24 +23,28 @@ jobs:
           sudo apt update
           sudo apt install -y cppcheck  # Install cppcheck
 
+      - name: Generate Timestamp
+        run: echo "TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")" >> $GITHUB_ENV
+
+      - name: Print Current Working Directory (pwd)
+        run: |
+          echo "Current working directory: $(pwd)"
+          ls -al
+
       - name: Run cppcheck and generate report
         run: |
-          # cppcheck --enable=warning,performance,portability,style --xml --xml-version=2 . 2> Anne-Aria_cppcheck-report.xml  # Running cppcheck
+          REPORT_FILE="Anne-Aria_cppcheck-report-${{ env.TIMESTAMP }}.xml"
           cppcheck $(pwd)/file \
           --xml \
-          --output-file=Anne-Aria_cppcheck-report.xml \
+          --output-file=$REPORT_FILE \
           --enable=warning,performance,portability,style \
           -I$(pwd)/file/zephyr/soc/arm/common \
           -I$(pwd)/file/zephyr/lib/libc/newlib/include \
           -I$(pwd)/file/zephyr/modules/hal
-      - name: Print Current Working Directory (pwd)
-        run: |
-          echo "Current working directory: $(pwd)"  # Print current directory
-          ls -al
-
+          echo "REPORT_FILE=$REPORT_FILE" >> $GITHUB_ENV
 
       - name: Upload cppcheck report as artifact
-        uses: actions/upload-artifact@v4.0.0  #Uploads the cppcheck report1
+        uses: actions/upload-artifact@v4.0.0
         with:
-          name: Anne-Aria_cppcheck-report
-          path: Anne-Aria_cppcheck-report.xml
+          name: Anne-Aria_cppcheck-report-${{ env.TIMESTAMP }}
+          path: ${{ env.REPORT_FILE }}
