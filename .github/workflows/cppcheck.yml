@@ -12,6 +12,7 @@ on:
       - '**/*.cpp'
       - '**/*.h'
       - '.github/workflows/cppcheck.yml'  # Include workflow file itself
+      - '.github/workflows/schedule.yml'  # Include workflow file schedule.yml
   pull_request:
     branches:
       - '**'      # Runs on all branches (including merges)
@@ -20,6 +21,7 @@ on:
       - '**/*.cpp'
       - '**/*.h'
       - '.github/workflows/cppcheck.yml'  # Include workflow file itself
+      - '.github/workflows/schedule.yml'  # Include workflow file schedule.yml
 
 jobs:
   cppcheck_Anne-Aria:
