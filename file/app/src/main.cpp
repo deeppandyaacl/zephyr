@@ -9,6 +9,8 @@ Added CPP config
 Name changes
 Report name time and datae added
 TIme stamp of IST
+yaml change
+Pull event added in yml
 */
 
 
