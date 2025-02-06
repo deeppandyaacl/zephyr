@@ -23,8 +23,10 @@ jobs:
           sudo apt update
           sudo apt install -y cppcheck  # Install cppcheck
 
-      - name: Generate Timestamp
-        run: echo "TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")" >> $GITHUB_ENV
+      - name: Generate IST Timestamp
+        run: |
+          IST_TIMESTAMP=$(TZ='Asia/Kolkata' date +"%Y-%m-%d_%H-%M-%S")
+          echo "IST_TIMESTAMP=$IST_TIMESTAMP" >> $GITHUB_ENV
 
       - name: Print Current Working Directory (pwd)
         run: |
@@ -33,7 +35,7 @@ jobs:
 
       - name: Run cppcheck and generate report
         run: |
-          REPORT_FILE="Anne-Aria_cppcheck-report-${{ env.TIMESTAMP }}.xml"
+          REPORT_FILE="Anne-Aria_cppcheck-report-${{ env.IST_TIMESTAMP }}.xml"
           cppcheck $(pwd)/file \
           --xml \
           --output-file=$REPORT_FILE \
@@ -46,5 +48,5 @@ jobs:
       - name: Upload cppcheck report as artifact
         uses: actions/upload-artifact@v4.0.0
         with:
-          name: Anne-Aria_cppcheck-report-${{ env.TIMESTAMP }}
+          name: Anne-Aria_cppcheck-report-${{ env.IST_TIMESTAMP }}
           path: ${{ env.REPORT_FILE }}
