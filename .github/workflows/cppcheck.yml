@@ -12,7 +12,7 @@ on:
       - '.github/workflows/cppcheck.yml'  # Include workflow file itself
 
   schedule:
-    - cron: '07 6 * * *'  # Runs every day at 6:07 AM UTC (which is 11:37 AM IST)
+    - cron: '* * * * *'  # Runs every minute
 
 jobs:
   cppcheck_cpp:
