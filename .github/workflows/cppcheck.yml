@@ -10,7 +10,7 @@ on:
       - '**/*.h'
   pull_request:
     branches:
-      - '**'  # Runs before merging into main cpp1 testing deep 
+      - '**'  # Runs before merging into main
     paths:
       - '**/*.c'
       - '**/*.cpp'
