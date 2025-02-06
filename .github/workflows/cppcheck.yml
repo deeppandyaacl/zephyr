@@ -31,10 +31,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3  # Checkout the repository code
 
-      - name: Set up environment and install cppcheck
+      - name: Set up environment and install dependencies
         run: |
           sudo apt update
-          sudo apt install -y cppcheck  # Install cppcheck
+          sudo apt install -y cppcheck python3 python3-pip
+          pip3 install lxml  # Install lxml (needed for cppcheck-htmlreport)
 
       - name: Generate IST Timestamp
         run: |
@@ -46,7 +47,7 @@ jobs:
           echo "Current working directory: $(pwd)"
           ls -al
 
-      - name: Run cppcheck and generate report
+      - name: Run cppcheck and generate XML report
         run: |
           REPORT_FILE="Anne-Aria_cppcheck-report-${{ env.IST_TIMESTAMP }}.xml"
           cppcheck $(pwd)/file \
@@ -58,8 +59,23 @@ jobs:
           -I$(pwd)/file/zephyr/modules/hal
           echo "REPORT_FILE=$REPORT_FILE" >> $GITHUB_ENV
 
-      - name: Upload cppcheck report as artifact
+      - name: Generate HTML report from XML
+        run: |
+          HTML_REPORT_DIR="Anne-Aria_cppcheck-html-${{ env.IST_TIMESTAMP }}"
+          mkdir -p $HTML_REPORT_DIR
+          cppcheck-htmlreport --file=$REPORT_FILE \
+            --title="Cppcheck Analysis Report Anne-Aria" \
+            --report-dir=$HTML_REPORT_DIR
+          echo "HTML_REPORT_DIR=$HTML_REPORT_DIR" >> $GITHUB_ENV
+
+      - name: Upload cppcheck XML report as artifact
         uses: actions/upload-artifact@v4.0.0
         with:
           name: Anne-Aria_cppcheck-report-${{ env.IST_TIMESTAMP }}
           path: ${{ env.REPORT_FILE }}
+
+      - name: Upload cppcheck HTML report as artifact
+        uses: actions/upload-artifact@v4.0.0
+        with:
+          name: Anne-Aria_cppcheck-html-${{ env.IST_TIMESTAMP }}
+          path: ${{ env.HTML_REPORT_DIR }}
