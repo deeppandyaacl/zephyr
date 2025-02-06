@@ -1,0 +1,64 @@
+# Cppcheck CI
+name: Cppcheck CI
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # Runs every minute
+    # - cron: '5 * * * *'  # Runs every minute
+  push:
+    branches:
+      - '**'      # Runs on all branches (including merges)
+    paths:
+      - '**/*.c'
+      - '**/*.cpp'
+      - '**/*.h'
+      - '.github/workflows/cppcheck.yml'  # Include workflow file itself
+  pull_request:
+    branches:
+      - '**'      # Runs on all branches (including merges)
+    paths:
+      - '**/*.c'
+      - '**/*.cpp'
+      - '**/*.h'
+      - '.github/workflows/cppcheck.yml'  # Include workflow file itself
+
+jobs:
+  cppcheck_Anne-Aria:
+    runs-on: ubuntu-20.04  # Use Ubuntu 20.04 for consistency
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3  # Checkout the repository code
+
+      - name: Set up environment and install cppcheck
+        run: |
+          sudo apt update
+          sudo apt install -y cppcheck  # Install cppcheck
+
+      - name: Generate IST Timestamp
+        run: |
+          IST_TIMESTAMP=$(TZ='Asia/Kolkata' date +"%Y-%m-%d_%H-%M-%S")
+          echo "IST_TIMESTAMP=$IST_TIMESTAMP" >> $GITHUB_ENV
+
+      - name: Print Current Working Directory (pwd)
+        run: |
+          echo "Current working directory: $(pwd)"
+          ls -al
+
+      - name: Run cppcheck and generate report
+        run: |
+          REPORT_FILE="Anne-Aria_cppcheck-report-${{ env.IST_TIMESTAMP }}.xml"
+          cppcheck $(pwd)/file \
+          --xml \
+          --output-file=$REPORT_FILE \
+          --enable=warning,performance,portability,style \
+          -I$(pwd)/file/zephyr/soc/arm/common \
+          -I$(pwd)/file/zephyr/lib/libc/newlib/include \
+          -I$(pwd)/file/zephyr/modules/hal
+          echo "REPORT_FILE=$REPORT_FILE" >> $GITHUB_ENV
+
+      - name: Upload cppcheck report as artifact
+        uses: actions/upload-artifact@v4.0.0
+        with:
+          name: Anne-Aria_cppcheck-report-${{ env.IST_TIMESTAMP }}
+          path: ${{ env.REPORT_FILE }}
