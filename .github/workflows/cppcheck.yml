@@ -10,6 +10,7 @@ on:
       - '**/*.c'
       - '**/*.cpp'
       - '**/*.h'
+      - '.github/workflows/cppcheck.yml'  # Include workflow file itself
   pull_request:
     branches:
       - '**'    # Runs on all branches (including merges)
@@ -17,6 +18,7 @@ on:
       - '**/*.c'
       - '**/*.cpp'
       - '**/*.h'
+      - '.github/workflows/cppcheck.yml'  # Include workflow file itself
 jobs:
   cppcheck_cpp:
     runs-on: ubuntu-20.04  # Use Ubuntu 20.04 For consistency
