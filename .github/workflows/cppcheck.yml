@@ -3,7 +3,7 @@ name: Cppcheck CI
 
 on:
   schedule:
-    - cron: '1 * * * *'  # Runs every minute
+    - cron: '10 * * * *'  # Runs every minute
   push:
     branches:
       - '**'      # Runs on all branches (including merges)
