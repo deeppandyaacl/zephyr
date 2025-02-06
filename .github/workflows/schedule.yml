@@ -46,7 +46,7 @@ jobs:
           # Generate HTML report inside the same directory
           cppcheck-htmlreport --file=$XML_REPORT_FILE \
             --title="Cppcheck Analysis Report Anne-Aria" \
-            --report-dir=$REPORT_DIR
+            --report-dir=$REPORT_DIR/HTML_REPORT
 
           echo "REPORT_DIR=$REPORT_DIR" >> $GITHUB_ENV
 
