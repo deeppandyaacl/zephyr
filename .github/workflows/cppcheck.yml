@@ -36,6 +36,7 @@ jobs:
       - name: Print Current Working Directory (pwd)
         run: |
           echo "Current working directory: $(pwd)"  # Print current directory
+          ls -al
 
 
       - name: Upload cppcheck report as artifact
