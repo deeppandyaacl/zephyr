@@ -53,7 +53,7 @@ jobs:
           mkdir -p $REPORT_DIR
 
           XML_REPORT_FILE="$REPORT_DIR/Anne-Aria_cppcheck-report.xml"
-          cppcheck $(pwd)/file \
+          cppcheck $(pwd) \
           --xml \
           --output-file=$XML_REPORT_FILE \
           --enable=warning,performance,portability,style
