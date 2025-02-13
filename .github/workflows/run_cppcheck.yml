@@ -53,10 +53,23 @@ jobs:
           mkdir -p $REPORT_DIR
 
           XML_REPORT_FILE="$REPORT_DIR/Anne-Aria_cppcheck-report.xml"
+
+          MACRO_FILE="$(pwd)/file/app/cppcheck_includes/autoconf.h"
+          if [ -f "$MACRO_FILE" ]; then
+            echo "Macro file found: $MACRO_FILE"
+            MACROS=$(grep -oP '^#define\s+\K\w+' $MACRO_FILE | awk '{print "-D" $1}')
+            echo "Using macros: $MACROS"
+            CPP_ARGS="$MACROS"
+          else
+            echo "Macro file not found, running without macros."
+            CPP_ARGS=""
+          fi
+
           cppcheck $(pwd) \
-          --xml \
-          --output-file=$XML_REPORT_FILE \
-          --enable=warning,performance,portability,style
+            --xml \
+            --output-file=$XML_REPORT_FILE \
+            --enable=warning,performance,portability,style \
+            --std=c++17 $CPP_ARGS
 
           # Generate HTML report inside the same directory
           cppcheck-htmlreport --file=$XML_REPORT_FILE \
