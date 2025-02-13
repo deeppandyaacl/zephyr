@@ -54,7 +54,7 @@ jobs:
 
           XML_REPORT_FILE="$REPORT_DIR/Anne-Aria_cppcheck-report.xml"
 
-          MACRO_FILE="$(pwd)/file/app/cppcheck_includes/autoconf1.h"
+          MACRO_FILE="$(pwd)/file/app/cppcheck_includes/autoconf.h"
           if [ -f "$MACRO_FILE" ]; then
             echo "Macro file found: $MACRO_FILE"
             MACROS=$(grep -oP '^#define\s+\K\w+' $MACRO_FILE | awk '{print "-D" $1}')
