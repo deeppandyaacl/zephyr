@@ -1,0 +1,18 @@
+# editors
+.vscode
+*.code-workspace
+*.swp
+*~
+
+# python
+.venv
+
+# build
+/app/build*
+/build*
+/twister-out*
+
+__pycache__/
+.cache/*
+
+app/version.conf

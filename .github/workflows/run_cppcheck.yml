@@ -1,27 +1,27 @@
-# Cppcheck CI
-name: Cppcheck CI
+# Cppcheck CI-CD
+name: Cppcheck CI-CD
 
 on:
   schedule:
     - cron: '*/7 * * * *'  # Runs every minute
   push:
     branches:
-      - '**'      # Runs on all branches (including merges)
+      - develop      # Runs on develop branch (including merges)
+      # - '**'      # Runs on all branches (including merges)
     paths:
       - '**/*.c'
       - '**/*.cpp'
       - '**/*.h'
-      - '.github/workflows/cppcheck.yml'  # Include workflow file itself
-      - '.github/workflows/schedule.yml'  # Include workflow file schedule.yml
+      - '.github/workflows/run_cppcheck.yml'  # Include workflow file itself
   pull_request:
     branches:
-      - '**'      # Runs on all branches (including merges)
+      - develop      # Runs on develop branch (including merges)
+      # - '**'      # Runs on all branches (including merges)
     paths:
       - '**/*.c'
       - '**/*.cpp'
       - '**/*.h'
-      - '.github/workflows/cppcheck.yml'  # Include workflow file itself
-      - '.github/workflows/schedule.yml'  # Include workflow file schedule.yml
+      - '.github/workflows/run_cppcheck.yml'  # Include workflow file itself
 
 jobs:
   cppcheck_Anne-Aria:
@@ -56,10 +56,7 @@ jobs:
           cppcheck $(pwd)/file \
           --xml \
           --output-file=$XML_REPORT_FILE \
-          --enable=warning,performance,portability,style \
-          -I$(pwd)/file/zephyr/soc/arm/common \
-          -I$(pwd)/file/zephyr/lib/libc/newlib/include \
-          -I$(pwd)/file/zephyr/modules/hal
+          --enable=warning,performance,portability,style
 
           # Generate HTML report inside the same directory
           cppcheck-htmlreport --file=$XML_REPORT_FILE \
