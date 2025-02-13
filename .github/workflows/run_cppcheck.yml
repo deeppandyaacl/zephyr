@@ -70,3 +70,7 @@ jobs:
         with:
           name: Anne-Aria_cppcheck-reports-${{ env.IST_TIMESTAMP }}
           path: ${{ env.REPORT_DIR }}
+      - name: Print Current Working Directory (pwd)
+        run: |
+          echo "Current working directory: $(pwd)"
+          ls -al
